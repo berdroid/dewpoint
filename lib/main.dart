@@ -74,7 +74,20 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(
               children: [
                 const Text('Dew point [°C]:'),
-                _bigNum(dewPoint, 0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    _bigNum(dewPoint, 0),
+                    const SizedBox(width: 10),
+                    Icon(
+                      dewPoint > 0 ? Icons.water_drop : Icons.severe_cold,
+                      color: Colors.blueAccent,
+                      size: 28,
+                    ),
+                  ],
+                ),
               ],
             ),
             Column(
@@ -82,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 const Text('Temperature [°C]:'),
                 _bigNum(temperature, 1),
                 Slider(
-                  min: 10.0,
+                  min: -25.0,
                   max: 50.0,
                   value: temperature,
                   onChanged: _updateTemperature,
