@@ -95,8 +95,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 const Text('Temperature [°C]:'),
                 _bigNum(temperature, 1),
                 Slider(
-                  min: -25.0,
-                  max: 50.0,
+                  min: -10.0,
+                  max: 40.0,
                   value: temperature,
                   onChanged: _updateTemperature,
                 ),
