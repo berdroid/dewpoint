@@ -37,8 +37,9 @@ class _MyHomePageState extends State<MyHomePage> {
   double dewPoint = 0.0;
   double absHumidity = 0.0;
 
-  void _updateDewPoint() {
+  void _updateCalculation() {
     dewPoint = calcDewPoint(temperature, humidity);
+    absHumidity = calcAbsoluteHumidity(temperature, humidity);
   }
 
   void _updateTemperature(double t) {
@@ -72,20 +73,45 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Column(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('Dew point [°C]:'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  textBaseline: TextBaseline.alphabetic,
+                Column(
                   children: [
-                    _bigNum(dewPoint, 0),
-                    const SizedBox(width: 10),
-                    Icon(
-                      dewPoint > 0 ? Icons.water_drop : Icons.severe_cold,
-                      color: Colors.blueAccent,
-                      size: 28,
+                    const Text('Dew point [°C]:'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        _bigNum(dewPoint, 0),
+                        const SizedBox(width: 10),
+                        Icon(
+                          dewPoint > 0 ? Icons.water_drop : Icons.ac_unit,
+                          color: Colors.blueAccent,
+                          size: 28,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    const Text('Abs. humidity [g/m³]:'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        _bigNum(absHumidity, 1),
+                        const SizedBox(width: 10),
+                        const Icon(
+                          Icons.cloud_outlined,
+                          color: Colors.blueAccent,
+                          size: 28,
+                        ),
+                      ],
                     ),
                   ],
                 ),
