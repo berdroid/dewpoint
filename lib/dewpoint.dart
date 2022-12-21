@@ -1,7 +1,7 @@
 import 'dart:math';
 
-/// Calculate dew point for a given temperature [t] and
-/// humidity [h]
+/// Calculate dew point in °C for a given
+/// temperature [t] in °C and rel humidity [h] in %
 ///
 /// valid in temperature rage -40 ... 50°C
 ///
@@ -19,4 +19,28 @@ double calcDewPoint(double t, double h) {
 
   final x = log(h / 100.0) + (b * t) / (c + t);
   return (c * x) / (b - x);
+}
+
+/// Calculate absolute water in air in g/m³ for a given
+/// temperature [t] in °C and rel humidity [h] in %
+///
+/// valid in temperature rage -40 ... 50°C
+///
+/// Luftfeuchte
+/// https://www.wetterochs.de/wetter/feuchte.html
+double calcAbsoluteHumidity(double t, double h) {
+  final a = t > 0 ? 7.5 : 7.6;
+  final b = t > 0 ? 237.3 : 240.7;
+
+  // absolute temperature in K
+  final T = t + 273.25;
+
+  // dew point
+  final td = calcDewPoint(t, h);
+
+  // saturated water vapor pressure in hPa
+  final ps = 6.1078 * pow(10.0, (a * td) / (b + td));
+
+  // absolute water content in g/m³
+  return 218.42 * ps / T;
 }
