@@ -41,4 +41,11 @@ main() {
       expect(calcAbsoluteHumidity(22.0, 50.0), closeTo(9.7, 0.15));
     });
   });
+
+  group('Cold', () {
+    test('-10°C', () {
+      expect(calcDewPoint(-10.0, 50.0), closeTo(-18.4, 0.15));
+      expect(calcAbsoluteHumidity(-10.0, 50.0), closeTo(1.2, 0.15));
+    });
+  });
 }
