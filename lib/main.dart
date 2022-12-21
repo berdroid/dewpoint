@@ -34,7 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
   double temperature = 20.0;
   double humidity = 50.0;
 
-  double dewPoint = 13.0;
+  double dewPoint = 0.0;
+  double absHumidity = 0.0;
 
   void _updateDewPoint() {
     dewPoint = calcDewPoint(temperature, humidity);
@@ -43,14 +44,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void _updateTemperature(double t) {
     setState(() {
       temperature = t;
-      _updateDewPoint();
     });
   }
 
   void _updateHumidity(double h) {
     setState(() {
       humidity = h;
-      _updateDewPoint();
     });
   }
 
@@ -63,6 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _updateCalculation();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
