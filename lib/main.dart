@@ -1,12 +1,13 @@
 import 'package:dewpoint/dewpoint.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -21,53 +22,37 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class BigNum extends StatelessWidget {
+  final double value;
+  final int decimals;
 
-  final String title;
+  const BigNum({super.key, required this.value, required this.decimals});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  double temperature = 20.0;
-  double humidity = 50.0;
-
-  double dewPoint = 0.0;
-  double absHumidity = 0.0;
-
-  void _updateCalculation() {
-    dewPoint = calcDewPoint(temperature, humidity);
-    absHumidity = calcAbsoluteHumidity(temperature, humidity);
-  }
-
-  void _updateTemperature(double t) {
-    setState(() {
-      temperature = t;
-    });
-  }
-
-  void _updateHumidity(double h) {
-    setState(() {
-      humidity = h;
-    });
-  }
-
-  Widget _bigNum(double value, int decimals) {
+  Widget build(BuildContext context) {
     return Text(
       value.toStringAsFixed(decimals),
       style: Theme.of(context).textTheme.headline4,
     );
   }
+}
+
+class MyHomePage extends HookWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
 
   @override
   Widget build(BuildContext context) {
-    _updateCalculation();
+    final temperature = useState(20.0);
+    final humidity = useState(50.0);
+
+    final dewPoint = calcDewPoint(temperature.value, humidity.value);
+    final absHumidity = calcAbsoluteHumidity(temperature.value, humidity.value);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       body: Center(
         child: Column(
@@ -85,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        _bigNum(dewPoint, 0),
+                        BigNum(value: dewPoint, decimals: 0),
                         const SizedBox(width: 10),
                         Icon(
                           dewPoint > 0 ? Icons.water_drop : Icons.ac_unit,
@@ -104,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        _bigNum(absHumidity, 1),
+                        BigNum(value: absHumidity, decimals: 1),
                         const SizedBox(width: 10),
                         const Icon(
                           Icons.cloud_outlined,
@@ -120,24 +105,24 @@ class _MyHomePageState extends State<MyHomePage> {
             Column(
               children: [
                 const Text('Temperature [°C]:'),
-                _bigNum(temperature, 1),
+                BigNum(value: temperature.value, decimals: 1),
                 Slider(
                   min: -10.0,
                   max: 40.0,
-                  value: temperature,
-                  onChanged: _updateTemperature,
+                  value: temperature.value,
+                  onChanged: (t) => temperature.value = t,
                 ),
               ],
             ),
             Column(
               children: [
                 const Text('Humidity [% rH]:'),
-                _bigNum(humidity, 0),
+                BigNum(value: humidity.value, decimals: 0),
                 Slider(
                   min: 10.0,
                   max: 100.0,
-                  value: humidity,
-                  onChanged: _updateHumidity,
+                  value: humidity.value,
+                  onChanged: (h) => humidity.value = h,
                 ),
               ],
             ),
