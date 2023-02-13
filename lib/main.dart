@@ -1,4 +1,5 @@
 import 'package:dewpoint/dewpoint.dart';
+import 'package:dewpoint/widgets/state_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -47,8 +48,8 @@ class MyHomePage extends HookWidget {
     final temperature = useState(20.0);
     final humidity = useState(50.0);
 
-    final dewPoint = calcDewPoint(temperature.value, humidity.value);
-    final absHumidity = calcAbsoluteHumidity(temperature.value, humidity.value);
+    final dewPoint = DewPoint.calcDewPoint(temperature.value, humidity.value);
+    final absHumidity = DewPoint.calcAbsoluteHumidity(temperature.value, humidity.value);
 
     return Scaffold(
       appBar: AppBar(
@@ -62,51 +63,27 @@ class MyHomePage extends HookWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  children: [
-                    const Text('Dew point [°C]:'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        BigNum(value: dewPoint, decimals: 0),
-                        const SizedBox(width: 10),
-                        Icon(
-                          dewPoint > 0 ? Icons.water_drop : Icons.ac_unit,
-                          color: Colors.blueAccent,
-                          size: 28,
-                        ),
-                      ],
-                    ),
-                  ],
+                StateDisplay(
+                  value: dewPoint,
+                  caption: 'Dew point [°C]:',
+                  iconData: dewPoint > 0 ? Icons.water_drop : Icons.ac_unit,
                 ),
-                Column(
-                  children: [
-                    const Text('Abs. humidity [g/m³]:'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        BigNum(value: absHumidity, decimals: 1),
-                        const SizedBox(width: 10),
-                        const Icon(
-                          Icons.cloud_outlined,
-                          color: Colors.blueAccent,
-                          size: 28,
-                        ),
-                      ],
-                    ),
-                  ],
+                StateDisplay(
+                  value: absHumidity,
+                  decimals: 1,
+                  caption: 'Abs. humidity [g/m³]:',
+                  iconData: Icons.cloud_outlined,
                 ),
               ],
             ),
             Column(
               children: [
-                const Text('Temperature [°C]:'),
-                BigNum(value: temperature.value, decimals: 1),
-                Slider(
+                StateDisplay(
+                  value: temperature.value,
+                  decimals: 1,
+                  caption: 'Temperature [°C]:',
+                ),
+                Slider.adaptive(
                   min: -10.0,
                   max: 40.0,
                   value: temperature.value,
@@ -116,9 +93,11 @@ class MyHomePage extends HookWidget {
             ),
             Column(
               children: [
-                const Text('Humidity [% rH]:'),
-                BigNum(value: humidity.value, decimals: 0),
-                Slider(
+                StateDisplay(
+                  value: humidity.value,
+                  caption: 'Humidity [% rH]:',
+                ),
+                Slider.adaptive(
                   min: 10.0,
                   max: 100.0,
                   value: humidity.value,
