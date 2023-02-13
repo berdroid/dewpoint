@@ -1,5 +1,6 @@
 import 'package:dewpoint/dewpoint.dart';
 import 'package:dewpoint/widgets/state_display.dart';
+import 'package:dewpoint/widgets/value_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -19,21 +20,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Dew Point Calculator'),
-    );
-  }
-}
-
-class BigNum extends StatelessWidget {
-  final double value;
-  final int decimals;
-
-  const BigNum({super.key, required this.value, required this.decimals});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      value.toStringAsFixed(decimals),
-      style: Theme.of(context).textTheme.headline4,
     );
   }
 }
@@ -76,34 +62,20 @@ class MyHomePage extends HookWidget {
                 ),
               ],
             ),
-            Column(
-              children: [
-                StateDisplay(
-                  value: temperature.value,
-                  decimals: 1,
-                  caption: 'Temperature [°C]:',
-                ),
-                Slider.adaptive(
-                  min: -10.0,
-                  max: 40.0,
-                  value: temperature.value,
-                  onChanged: (t) => temperature.value = t,
-                ),
-              ],
+            ValueSlider(
+              value: temperature.value,
+              valueMin: -10,
+              valueMax: 40,
+              decimals: 1,
+              caption: 'Temperature [°C]:',
+              onChanged: (t) => temperature.value = t,
             ),
-            Column(
-              children: [
-                StateDisplay(
-                  value: humidity.value,
-                  caption: 'Humidity [% rH]:',
-                ),
-                Slider.adaptive(
-                  min: 10.0,
-                  max: 100.0,
-                  value: humidity.value,
-                  onChanged: (h) => humidity.value = h,
-                ),
-              ],
+            ValueSlider(
+              value: humidity.value,
+              valueMin: 10,
+              valueMax: 100,
+              caption: 'Humidity [% rH]:',
+              onChanged: (h) => humidity.value = h,
             ),
           ],
         ),
