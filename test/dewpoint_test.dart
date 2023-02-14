@@ -22,7 +22,7 @@ void main() {
     });
   });
 
-  group('Dew point', () {
+  group('Abs. humidity', () {
     test('0°C', () {
       expect(DewPoint.calcAbsoluteHumidity(0.0, 25.0), closeTo(1.2, 0.15));
       expect(DewPoint.calcAbsoluteHumidity(0.0, 50.0), closeTo(2.4, 0.15));
@@ -46,6 +46,46 @@ void main() {
     test('-10°C', () {
       expect(DewPoint.calcDewPoint(-10.0, 50.0), closeTo(-18.4, 0.15));
       expect(DewPoint.calcAbsoluteHumidity(-10.0, 50.0), closeTo(1.2, 0.15));
+    });
+  });
+
+  group('Rel. humidity', () {
+    test('Dew point 0°C', () {
+      expect(DewPoint.calcRelativeHumidity(20.0, 0.0), closeTo(26.2, 0.1));
+      expect(DewPoint.calcRelativeHumidity(10.9, 0.0), closeTo(46.9, 0.1));
+      expect(DewPoint.calcRelativeHumidity(0.0, 0.0), closeTo(100.0, 0.1));
+    });
+
+    test('Dew point 15°C', () {
+      expect(DewPoint.calcRelativeHumidity(20.0, 15.0), closeTo(73.0, 0.1));
+      expect(DewPoint.calcRelativeHumidity(37.0, 15.0), closeTo(27.2, 0.1));
+      expect(DewPoint.calcRelativeHumidity(15.0, 15.0), closeTo(100.0, 0.1));
+    });
+
+    test('Dew point 30°C', () {
+      expect(DewPoint.calcRelativeHumidity(55.0, 30.0), closeTo(27.0, 0.1));
+      expect(DewPoint.calcRelativeHumidity(37.0, 30.0), closeTo(67.6, 0.1));
+      expect(DewPoint.calcRelativeHumidity(30.0, 30.0), closeTo(100.0, 0.1));
+    });
+  });
+
+  group('Temperature', () {
+    test('Dew point 0°C', () {
+      expect(DewPoint.calcTemperature(26.2, 0.0), closeTo(20.0, 0.1));
+      expect(DewPoint.calcTemperature(46.9, 0.0), closeTo(10.9, 0.1));
+      expect(DewPoint.calcTemperature(100.0, 0.0), closeTo(0.0, 0.1));
+    });
+
+    test('Dew point 15°C', () {
+      expect(DewPoint.calcTemperature(73.0, 15.0), closeTo(20.0, 0.1));
+      expect(DewPoint.calcTemperature(27.2, 15.0), closeTo(37.0, 0.1));
+      expect(DewPoint.calcTemperature(100.0, 15.0), closeTo(15.0, 0.1));
+    });
+
+    test('Dew point 30°C', () {
+      expect(DewPoint.calcTemperature(27.0, 30.0), closeTo(55.0, 0.1));
+      expect(DewPoint.calcTemperature(67.6, 30.0), closeTo(37.0, 0.1));
+      expect(DewPoint.calcTemperature(100.0, 30.0), closeTo(30.0, 0.1));
     });
   });
 }

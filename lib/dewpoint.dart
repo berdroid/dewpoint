@@ -45,4 +45,34 @@ class DewPoint {
     // absolute water content in g/m³
     return 218.42 * ps / T;
   }
+
+  /// Calculate relative humidity in % for a given
+  /// temperature [t] in °C and dew point [dp] in °C
+  ///
+  /// valid in temperature rage -40 ... 50°C
+  ///
+  static double calcRelativeHumidity(double t, double dp) {
+    const b = 17.269;
+    const c = 237.3;
+
+    final x = dp * b / (dp + c);
+    final y = x - b * t / (c + t);
+
+    return 100.0 * exp(y);
+  }
+
+  /// Calculate temperature in °C  for a given
+  /// relative humidity [h] in % and dew point [dp] in °C
+  ///
+  /// valid in temperature rage -40 ... 50°C
+  ///
+  static double calcTemperature(double h, double dp) {
+    const b = 17.269;
+    const c = 237.3;
+
+    final x = dp * b / (dp + c);
+    final y = x - log(h / 100.0);
+
+    return y * c / (b - y);
+  }
 }
