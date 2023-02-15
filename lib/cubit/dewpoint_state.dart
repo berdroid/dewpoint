@@ -32,7 +32,7 @@ class DewPointState extends Equatable {
       );
 
   @override
-  List<Object?> get props => [temperature, relHumidity, dewPoint, absHumidity];
+  List<Object?> get props => [temperature, relHumidity, dewPoint, absHumidity, locked];
 
   @override
   bool get stringify => true;
