@@ -18,5 +18,7 @@ void main() {
     // Tap the lock/free switch
     await tester.tap(find.byType(Switch));
     await tester.pump();
+
+    expect(find.byType(Switch), findsOneWidget);
   });
 }
