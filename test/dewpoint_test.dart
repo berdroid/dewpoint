@@ -1,4 +1,4 @@
-import 'package:dewpoint/dewpoint.dart';
+import 'package:dewpoint/models/dewpoint.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
