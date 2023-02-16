@@ -1,8 +1,15 @@
+import 'package:dewpoint/cubit/dewpoint_cubit.dart';
 import 'package:dewpoint/pages/dewpoint_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    BlocProvider<DewPointCubit>(
+      create: (_) => DewPointCubit(const DewPointState()),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
