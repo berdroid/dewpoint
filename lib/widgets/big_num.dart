@@ -10,7 +10,7 @@ class BigNum extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       value.toStringAsFixed(decimals),
-      style: Theme.of(context).textTheme.headline4,
+      style: Theme.of(context).textTheme.headlineMedium,
     );
   }
 }
