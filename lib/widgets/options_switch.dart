@@ -12,6 +12,7 @@ class OptionSwitch extends StatelessWidget {
   final String captionOff;
   final String captionOn;
   final bool state;
+  // ignore: avoid_positional_boolean_parameters
   final void Function(bool state)? onChanged;
 
   @override
