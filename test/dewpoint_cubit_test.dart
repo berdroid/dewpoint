@@ -41,5 +41,31 @@ void main() {
         ..updateHumidity(27.2)
         ..updateLocked(locked: true);
     });
+
+    test('emits updated humidity in locked state', () {
+      unawaited(expectLater(
+          cubit.stream,
+          emitsThrough(predicate(
+              (DewPointState state) => 14.9 < state.dewPoint && state.dewPoint < 15.1 && state.relHumidity == 55.5))));
+      cubit.stream.listen(print);
+      cubit
+        ..updateTemperature(37.0)
+        ..updateHumidity(27.2)
+        ..updateLocked(locked: true)
+        ..updateHumidity(55.5);
+    });
+
+    test('emits updated temperature in locked state', () {
+      unawaited(expectLater(
+          cubit.stream,
+          emitsThrough(predicate(
+              (DewPointState state) => 14.9 < state.dewPoint && state.dewPoint < 15.1 && state.temperature == 55.5))));
+      cubit.stream.listen(print);
+      cubit
+        ..updateTemperature(37.0)
+        ..updateHumidity(27.2)
+        ..updateLocked(locked: true)
+        ..updateTemperature(55.5);
+    });
   });
 }
